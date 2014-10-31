@@ -1,0 +1,21 @@
+<?php
+$title = 'Subject list in grade "'.$grade->level.$grade->prefix.'"';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<table class="table">
+<tr>
+    <th>Name</th>
+    <th>&nbsp;</th>
+</tr>
+<?php foreach ($subjects as $subject) : ?>
+<tr>
+    <td><?php echo $this->escapeHtml($subject->name);?></td>
+    <td>
+        <a href="<?php echo $this->url('journal',
+            array('grade_id' => $grade->id, 'subject_id' => $subject->id));?>">GradeBook</a>
+    </td>
+</tr>
+<?php endforeach; ?>
+</table>

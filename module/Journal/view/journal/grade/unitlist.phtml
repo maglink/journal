@@ -1,0 +1,21 @@
+<?php
+$title = 'Unit list in grade "'.$grade->level.$grade->prefix.'"';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<table class="table">
+<tr>
+    <th>FullName</th>
+    <th>&nbsp;</th>
+</tr>
+<?php foreach ($units as $unit) : ?>
+<tr>
+    <td><?php echo $this->escapeHtml($unit->fullname);?></td>
+    <td>
+        <a href="<?php echo $this->url('unit',
+            array('id' => $unit->id));?>">Marks</a>
+    </td>
+</tr>
+<?php endforeach; ?>
+</table>

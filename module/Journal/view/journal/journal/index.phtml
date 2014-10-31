@@ -1,0 +1,39 @@
+<?php
+$title = 'Gradebook on '.$subject->name.' in '.$grade->level.$grade->prefix;
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<p>Week:<?php echo $this->escapeHtml(date ('W',$time));?></p>
+<p><?php echo $this->escapeHtml(date ('d/m',$timeS));?> - 
+    <?php echo $this->escapeHtml(date ('d/m',$timeE));?></p>
+<a href="<?php echo $this->url('journal',
+    array(  'grade_id' => $grade->id,
+            'subject_id' => $subject->id,
+            'time' => strtotime('-7 days', $time),
+          )
+    );?>">Back</a>
+<a href="<?php echo $this->url('journal',
+    array(  'grade_id' => $grade->id,
+            'subject_id' => $subject->id,
+            'time' => strtotime('+7 days', $time),
+          )
+    );?>">Next</a>
+
+<table class="table table-bordered">
+    <tr>
+        <th>&nbsp;</th>
+        <?php foreach ($dates as $date) : ?>
+            <th><?php echo $this->escapeHtml(date_format($date, 'd/m'));?></th>
+        <?php endforeach; ?>
+    </tr>
+    <?php foreach ($units as $unit) : ?>
+    <tr>
+        <td><?php echo $this->escapeHtml($unit['unit']->fullname);?></td>
+        <?php foreach ($unit['marks']as $mark) : ?>
+            <td><?php echo $this->escapeHtml($mark['mark']);?></td>
+        <?php endforeach; ?>
+    </tr>
+    <?php endforeach; ?>
+</table>
+
