@@ -3,15 +3,20 @@ $title = 'Unit info';
 $this->headTitle($title);
 ?>
 <h1><?php echo $this->escapeHtml($title); ?></h1>
+<p>Name: <?php echo $this->escapeHtml($unit->fullname);?></p>
+<p>Grade:<?php echo $this->escapeHtml($grade->level), $this->escapeHtml($grade->prefix);?></p>
+<p>Month:<?php echo $this->escapeHtml(date("m",$month));?></p>
+
 <table class="table">
-<tr>
-    <th>FullName</th>
-    <th>Grade</th>
-    <th>&nbsp;</th>
-</tr>
-<tr>
-    <td><?php echo $this->escapeHtml($unit->fullname);?></td>
-    <td><?php echo $this->escapeHtml($grade->level), $this->escapeHtml($grade->prefix);?></td>
-    <td></td>
-</tr>
+    <tr>
+        <th>Subject</th>
+        <th>Month Total Avg</th>
+        <th>&nbsp;</th>
+    </tr>
+    <?php foreach ($marks as $mark) : ?>
+        <tr>
+            <td><?php echo $this->escapeHtml($mark['subject']->name);?></td>
+            <td><?php echo $this->escapeHtml($mark['avg']);?></td>
+        </tr>
+    <?php endforeach; ?>
 </table>

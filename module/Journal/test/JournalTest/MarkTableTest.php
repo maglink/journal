@@ -29,7 +29,7 @@ class MarkTableTest extends PHPUnit_Framework_TestCase
         
         $markTable = new MarkTable($mockTableGateway);
 
-        $this->assertSame($mark->value, $markTable->getMarkByUnitAndLesson(1,2));
+        $this->assertSame($mark->value, $markTable->getMarkValueByUnitAndLesson(1,2));
     }
 
 

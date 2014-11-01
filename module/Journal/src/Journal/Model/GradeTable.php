@@ -28,4 +28,28 @@ class GradeTable
         }
         return $row;
     }
+    
+    public function saveGrade(Grade $grade)
+    {
+        $data = array(
+            'level' => $grade->level,
+            'prefix'  => $grade->prefix,
+        );
+ 
+        $id = (int)$grade->id;
+        if ($id == 0) {
+            $this->tableGateway->insert($data);
+        } else {
+            if ($this->getGrade($id)) {
+                $this->tableGateway->update($data, array('id' => $id));
+            } else {
+                throw new \Exception('Form id does not exist');
+            }
+        }
+    }
+ 
+    public function deleteGrade($id)
+    {
+        $this->tableGateway->delete(array('id' => $id));
+    }
 }

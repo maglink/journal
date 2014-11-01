@@ -12,7 +12,7 @@ class MarkTable
         $this->tableGateway = $tableGateway;
     }
 
-    public function getMarkByUnitAndLesson($unit_id, $lesson_id)
+    public function getMarkValueByUnitAndLesson($unit_id, $lesson_id)
     {
         $unit_id  = (int) $unit_id;
         $lesson_id  = (int) $lesson_id;
@@ -24,10 +24,25 @@ class MarkTable
         );
         $row = $rowset->current();
         if(!$row):
-            return "";
+            return "-";
         endif;
         return $row->value;
     }
     
-    
+    public function saveMark(Mark $mark)
+    {
+        $data = array(
+            'value' => $mark->value,
+        );
+        $value = $this->getMarkValueByUnitAndLesson($mark->unit_id, $mark->lesson_id);
+        if ($value != "-") {
+            $this->tableGateway->update($data, array(
+                'unit_id' => (int)$mark->unit_id,
+                'lesson_id'  => (int)$mark->lesson_id
+            ));
+        } else {
+            $this->tableGateway->insert($data);
+        }
+    }
+
 }

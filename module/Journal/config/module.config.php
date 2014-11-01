@@ -3,6 +3,7 @@
 return array(
     'controllers' => array(
         'invokables' => array(
+            'Journal\Controller\Table' => 'Journal\Controller\TableController',
             'Journal\Controller\Journal' => 'Journal\Controller\JournalController',
             'Journal\Controller\Grade' => 'Journal\Controller\GradeController',
             'Journal\Controller\Unit' => 'Journal\Controller\UnitController',

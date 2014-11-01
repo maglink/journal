@@ -1,40 +1,50 @@
 <?php
 namespace Journal\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-class UnitController extends AbstractActionController
+class UnitController extends TableController
 {
-    protected $unitTable;
-    protected $gradeTable;
-    
     public function indexAction()
     {
        $id = (int) $this->params()->fromRoute('id', 0);
+       
        $unit = $this->getUnitTable()->getUnit($id);
        $grade = $this->getGradeTable()->getGrade($unit->grade_id);
+       
+       $month = strtotime('this month');
+       $timeS = strtotime(date('Y-m-01',$month));
+       $timeE = strtotime(date('Y-m-t',$month));
+       $subjects = $this->getSubjectTable()->getSubjectsByGrade($grade->id);
+       
+       $marks = array();
+       foreach($subjects as $subject)
+       {
+           $count = 0;
+           $sum = 0;
+           $lessons = $this->getLessonTable()->getLessonsByGradeSubjectAndTime(
+                   $grade->id, $subject->id, $timeS, $timeE);
+           foreach($lessons as $lesson)
+           {
+               $markValue = $this->getMarkTable()->getMarkValueByUnitAndLesson(
+                       $unit->id, $lesson->id);
+               if((int)$markValue > 0)
+               {
+                   $count++;
+                   $sum+=(int)$markValue;
+               }
+           }     
+           $marks[] = array(
+               'subject' => $subject,
+               'avg' => $count==0?0:$sum/$count,
+           );
+       }
+
        return new ViewModel(array(
             'unit' => $unit,
             'grade' => $grade,
+            'marks' => $marks,
+            'month' => $month,
         ));
-    }
-
-    public function getUnitTable()
-    {
-        if (!$this->unitTable) {
-            $sm = $this->getServiceLocator();
-            $this->unitTable = $sm->get('Journal\Model\UnitTable');
-        }
-        return $this->unitTable;
-    }
-    
-    public function getGradeTable()
-    {
-        if (!$this->gradeTable) {
-            $sm = $this->getServiceLocator();
-            $this->gradeTable = $sm->get('Journal\Model\GradeTable');
-        }
-        return $this->gradeTable;
     }
 }

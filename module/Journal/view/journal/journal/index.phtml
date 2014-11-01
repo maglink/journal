@@ -4,19 +4,19 @@ $this->headTitle($title);
 ?>
 <h1><?php echo $this->escapeHtml($title); ?></h1>
 
-<p>Week:<?php echo $this->escapeHtml(date ('W',$time));?></p>
+<p>Week:<?php echo $this->escapeHtml(date ('W',$timeS));?></p>
 <p><?php echo $this->escapeHtml(date ('d/m',$timeS));?> - 
     <?php echo $this->escapeHtml(date ('d/m',$timeE));?></p>
 <a href="<?php echo $this->url('journal',
     array(  'grade_id' => $grade->id,
             'subject_id' => $subject->id,
-            'time' => strtotime('-7 days', $time),
+            'time' => strtotime('-7 days', $timeS),
           )
     );?>">Back</a>
 <a href="<?php echo $this->url('journal',
     array(  'grade_id' => $grade->id,
             'subject_id' => $subject->id,
-            'time' => strtotime('+7 days', $time),
+            'time' => strtotime('+7 days', $timeS),
           )
     );?>">Next</a>
 
@@ -31,7 +31,12 @@ $this->headTitle($title);
     <tr>
         <td><?php echo $this->escapeHtml($unit['unit']->fullname);?></td>
         <?php foreach ($unit['marks']as $mark) : ?>
-            <td><?php echo $this->escapeHtml($mark['mark']);?></td>
+            <td><a href="<?php echo $this->url('admin',
+            array(  'action' => 'addmark',
+                    'id1' => $unit['unit']->id,
+                    'id2' => $mark['lesson']->id,
+                  )
+            );?>"><?php echo $this->escapeHtml($mark['mark']);?></a></td>
         <?php endforeach; ?>
     </tr>
     <?php endforeach; ?>
