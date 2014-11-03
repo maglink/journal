@@ -65,7 +65,8 @@ class AdminController extends TableController
                 $mark->exchangeArray($form->getData());
                 $this->getMarkTable()->saveMark($mark);
 
-                return $this->redirect('grade');
+                return $this->redirect()->toRoute('journal', 
+                        array('grade_id'=>$lesson->grade_id, 'subject_id'=>$lesson->subject_id));
             }
         }
         return array(

@@ -25,8 +25,15 @@ class GradeController extends TableController
     public function subjectlistAction()
     {
         $grade_id = (int) $this->params()->fromRoute('id', 0);
+        $lessons = $this->getLessonTable()->getSubjectsByGrade($grade_id);
+        $subjects = array();
+        foreach($lessons as $lesson)
+        {
+            $subject_id = $lesson->subject_id;
+            $subjects[] = $this->getSubjectTable()->getSubject($subject_id);
+        }
         return new ViewModel(array(
-            'subjects' => $this->getSubjectTable()->getSubjectsByGrade($grade_id),
+            'subjects' => $subjects,
             'grade' => $this->getGradeTable()->getGrade($grade_id),
         ));
     }

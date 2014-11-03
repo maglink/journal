@@ -29,15 +29,4 @@ class SubjectTable
         return $row;
     }
 
-    public function getSubjectsByGrade($grade_id)
-    {
-        $grade_id  = (int) $grade_id;
-        $rows = $this->tableGateway->select(array('grade_id' => $grade_id));
-        $records = array();
-        foreach ($rows as $row)
-        {
-            $records[] = $row;
-        }
-        return $records;
-    }
 }

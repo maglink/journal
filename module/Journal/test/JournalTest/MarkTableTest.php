@@ -32,5 +32,4 @@ class MarkTableTest extends PHPUnit_Framework_TestCase
         $this->assertSame($mark->value, $markTable->getMarkValueByUnitAndLesson(1,2));
     }
 
-
 }

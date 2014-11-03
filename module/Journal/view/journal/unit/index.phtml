@@ -16,7 +16,7 @@ $this->headTitle($title);
     <?php foreach ($marks as $mark) : ?>
         <tr>
             <td><?php echo $this->escapeHtml($mark['subject']->name);?></td>
-            <td><?php echo $this->escapeHtml($mark['avg']);?></td>
+            <td><?php echo $this->escapeHtml(number_format ( $mark['avg'], 2));?></td>
         </tr>
     <?php endforeach; ?>
 </table>

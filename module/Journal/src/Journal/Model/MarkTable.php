@@ -32,6 +32,8 @@ class MarkTable
     public function saveMark(Mark $mark)
     {
         $data = array(
+            'unit_id' => (int)$mark->unit_id,
+            'lesson_id'  => (int)$mark->lesson_id,
             'value' => $mark->value,
         );
         $value = $this->getMarkValueByUnitAndLesson($mark->unit_id, $mark->lesson_id);
