@@ -1,44 +1,65 @@
 <?php
-$title = 'Gradebook on '.$subject->name.' in '.$grade->level.$grade->prefix;
+$title = 'Gradebook on '.$subject->id.' in '.$grade->level.$grade->prefix.' grade';
 $this->headTitle($title);
 ?>
 <h1><?php echo $this->escapeHtml($title); ?></h1>
 
-<p>Week:<?php echo $this->escapeHtml(date ('W',$timeS));?></p>
-<p><?php echo $this->escapeHtml(date ('d/m',$timeS));?> - 
-    <?php echo $this->escapeHtml(date ('d/m',$timeE));?></p>
+<p>Week:<?php echo $this->escapeHtml($date_from->format('W'));?></p>
+
+<p><?php echo $this->escapeHtml($date_from->format('d/m'));?> - 
+    <?php echo $this->escapeHtml($date_to->format('d/m'));?></p>
+<?php $nowtime = strtotime($date_from->format('Y-m-d'));?>
 <a href="<?php echo $this->url('journal',
     array(  'grade_id' => $grade->id,
             'subject_id' => $subject->id,
-            'time' => strtotime('-7 days', $timeS),
+            'date' => date("Y-m-d", strtotime('-7 days', $nowtime)),
           )
     );?>">Back</a>
 <a href="<?php echo $this->url('journal',
     array(  'grade_id' => $grade->id,
             'subject_id' => $subject->id,
-            'time' => strtotime('+7 days', $timeS),
+            'date' => date("Y-m-d", strtotime('+7 days', $nowtime)),
           )
     );?>">Next</a>
 
-<table class="table table-bordered">
-    <tr>
-        <th>&nbsp;</th>
-        <?php foreach ($dates as $date) : ?>
-            <th><?php echo $this->escapeHtml(date_format($date, 'd/m'));?></th>
-        <?php endforeach; ?>
-    </tr>
-    <?php foreach ($units as $unit) : ?>
-    <tr>
-        <td><?php echo $this->escapeHtml($unit['unit']->fullname);?></td>
-        <?php foreach ($unit['marks']as $mark) : ?>
-            <td><a href="<?php echo $this->url('admin',
-            array(  'action' => 'addmark',
-                    'id1' => $unit['unit']->id,
-                    'id2' => $mark['lesson']->id,
-                  )
-            );?>"><?php echo $this->escapeHtml($mark['mark']);?></a></td>
-        <?php endforeach; ?>
-    </tr>
-    <?php endforeach; ?>
-</table>
+<?php if(count($results) == 0) : ?>
 
+    <h3>Lessons not found.</h3>
+    
+<?php else : ?>
+    
+    <table class="table table-bordered">
+        <tr>
+            <th></th>
+            <?php $unit_id = $results[0]['unit_id']; ?>
+            <?php for ($i = 0; $results[$i]['unit_id'] == $unit_id; $i++) : ?>
+                <?php $date = $results[$i]['lesson_date']; ?>
+                <th><?php echo $this->escapeHtml($date->format('d/m'));?></th>
+            <?php endfor; ?>
+        </tr>
+        <?php for ($i = 0; $i < count($results); $i++) : ?>
+            <tr>
+                <?php $unit_id = $results[$i]['unit_id']; ?>
+                <?php $unit_fullname = $results[$i]['unit_fullname']; ?>
+                <td><?php echo $this->escapeHtml($unit_fullname);?></td>
+                
+                <?php for (; $i < count($results) and $results[$i]['unit_id'] == $unit_id; $i++) : ?>
+                
+                    <?php $mark = $results[$i]['mark_value']; ?>
+                    <?php $mark = $mark ? $mark : "-"; ?>
+                    
+                    <td>
+                        <a href="<?php echo $this->url('admin/mark',
+                            array(  'action' => 'edit',
+                                    'unit_id' => $unit_id,
+                                    'lesson_id' => $results[$i]['lesson_id']
+                                  )
+                        );?>"><?php echo $this->escapeHtml($mark);?></a>
+                    </td>
+                    
+                <?php endfor; $i--;?>  
+            </tr>
+        <?php endfor; ?>
+    </table>
+    
+<?php endif; ?>

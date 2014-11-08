@@ -3,38 +3,34 @@ namespace Journal\Controller;
 
 use Zend\View\Model\ViewModel;
 
-class GradeController extends TableController
+class GradeController extends EntityController
 {
     public function indexAction()
     {
         return new ViewModel(array(
-            'grades' => $this->getGradeTable()->fetchAll(),
+            'grades' => $this->getRepository('Grade')->findAll(),
         ));
     }
 
-    public function unitlistAction()
+    public function unitsAction()
     {
-        
         $grade_id = (int) $this->params()->fromRoute('id', 0);
+        $grade = $this->getRepository('Grade')->find($grade_id);
+        if(!$grade) return $this->notFoundAction();
         return new ViewModel(array(
-            'units' => $this->getUnitTable()->getUnitsInGrade($grade_id),
-            'grade' => $this->getGradeTable()->getGrade($grade_id),
+            'grade' => $grade,
+            'units' => $grade->units,
         ));
     }
 
-    public function subjectlistAction()
+    public function subjectsAction()
     {
         $grade_id = (int) $this->params()->fromRoute('id', 0);
-        $lessons = $this->getLessonTable()->getSubjectsByGrade($grade_id);
-        $subjects = array();
-        foreach($lessons as $lesson)
-        {
-            $subject_id = $lesson->subject_id;
-            $subjects[] = $this->getSubjectTable()->getSubject($subject_id);
-        }
+        $grade = $this->getRepository('Grade')->find($grade_id);
+        if(!$grade) return $this->notFoundAction();
         return new ViewModel(array(
-            'subjects' => $subjects,
-            'grade' => $this->getGradeTable()->getGrade($grade_id),
+            'grade' => $grade,
+            'subjects' => $grade->subjects,
         ));
     }
 

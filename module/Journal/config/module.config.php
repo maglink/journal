@@ -1,9 +1,10 @@
 <?php
+namespace Journal;
 
 return array(
     'controllers' => array(
         'invokables' => array(
-            'Journal\Controller\Table' => 'Journal\Controller\TableController',
+            'Journal\Controller\Entity' => 'Journal\Controller\EntityController',
             'Journal\Controller\Journal' => 'Journal\Controller\JournalController',
             'Journal\Controller\Grade' => 'Journal\Controller\GradeController',
             'Journal\Controller\Unit' => 'Journal\Controller\UnitController',
@@ -24,12 +25,12 @@ return array(
             'journal' => array(
                 'type'    => 'segment',
                 'options' => array(
-                    'route'    => '/journal[/:action][/:grade_id][/:subject_id][/:time]',
+                    'route'    => '/journal[/:action][/:grade_id][/:subject_id][/:date]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'grade_id'     => '[0-9]+',
                         'subject_id'     => '[0-9]+',
-                        'time'     => '[0-9]+',
+                        'time'     => '[0-9_-]+',
                     ),
                     'defaults' => array(
                         'controller' => 'Journal\Controller\Journal',
@@ -54,7 +55,7 @@ return array(
             'unit' => array(
                 'type'    => 'segment',
                 'options' => array(
-                    'route'    => '/unit[/:action][/:id][/:subject_id]',
+                    'route'    => '/unit[/:id][/:action]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'     => '[0-9]+',
@@ -72,4 +73,18 @@ return array(
             'journal' => __DIR__ . '/../view',
         ),
     ),
+    'doctrine' => array(
+        'driver' => array(
+            __NAMESPACE__ . '_driver' => array(
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'cache' => 'array',
+                'paths' => array(__DIR__ . '/../src/' . __NAMESPACE__ . '/Entity')
+            ),
+            'orm_default' => array(
+                'drivers' => array(
+                    __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
+                )
+            )
+        )
+    )
 );

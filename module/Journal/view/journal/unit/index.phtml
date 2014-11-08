@@ -5,18 +5,18 @@ $this->headTitle($title);
 <h1><?php echo $this->escapeHtml($title); ?></h1>
 <p>Name: <?php echo $this->escapeHtml($unit->fullname);?></p>
 <p>Grade:<?php echo $this->escapeHtml($grade->level), $this->escapeHtml($grade->prefix);?></p>
-<p>Month:<?php echo $this->escapeHtml(date("m",$month));?></p>
+<p>Month:<?php echo $this->escapeHtml(date("F",$month));?></p>
 
 <table class="table">
     <tr>
-        <th>Subject</th>
-        <th>Month Total Avg</th>
+        <th>Subject name</th>
+        <th>Total mark</th>
         <th>&nbsp;</th>
     </tr>
     <?php foreach ($marks as $mark) : ?>
         <tr>
-            <td><?php echo $this->escapeHtml($mark['subject']->name);?></td>
-            <td><?php echo $this->escapeHtml(number_format ( $mark['avg'], 2));?></td>
+            <td><?php echo $this->escapeHtml($mark['subject_name']);?></td>
+            <td><?php echo $this->escapeHtml(number_format( $mark['mark_avg'], 1));?></td>
         </tr>
     <?php endforeach; ?>
 </table>

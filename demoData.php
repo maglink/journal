@@ -155,7 +155,7 @@ for ($grade_id = 1; $grade_id <= 10; $grade_id++) {
         
         if(rand(1,3) != 1) {continue;}
         
-        for ($day = -60; $day <= 0; $day++) {
+        for ($day = -10; $day <= 10; $day++) {
             
             if(rand(1,3) == 1) {continue;}
             

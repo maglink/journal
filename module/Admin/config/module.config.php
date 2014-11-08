@@ -3,26 +3,37 @@
 return array(
     'controllers' => array(
         'invokables' => array(
-            'Admin\Controller\Admin' => 'Admin\Controller\AdminController',
+            'Admin\Controller\Mark' => 'Admin\Controller\MarkController',
         ),
     ),
     'router' => array(
         'routes' => array(
             'admin' => array(
-                'type'    => 'segment',
+                'type'    => 'Literal',
                 'options' => array(
-                    'route'    => '/admin[/:action][/:id1][/:id2]',
-                    'constraints' => array(
-                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id1'     => '[0-9]+',
-                        'id2'     => '[0-9]+',
-                    ),
+                    'route'    => '/admin',
                     'defaults' => array(
-                        'controller' => 'Admin\Controller\Admin',
-                        'action'     => 'index',
                     ),
                 ),
-            ),
+                'child_routes' => array(
+                    'mark' => array(
+                        'type'    => 'segment',
+                        'options' => array(
+                            'route'    => '/mark/:unit_id/:lesson_id[/:action]',
+                            'constraints' => array(
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'unit_id'     => '[0-9]+',
+                                'lesson_id'     => '[0-9]+',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'Admin\Controller\Mark',
+                                'action'     => 'edit',
+                            ),
+                        ),
+                    ),
+                ),                
+                
+            ),    
         ),
     ),
     'view_manager' => array(

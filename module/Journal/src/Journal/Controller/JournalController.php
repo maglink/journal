@@ -3,57 +3,54 @@ namespace Journal\Controller;
 
 use Zend\View\Model\ViewModel;
 
-class JournalController extends TableController
+class JournalController extends EntityController
 {
     public function indexAction()
     {
         $grade_id = (int) $this->params()->fromRoute('grade_id', 0);
         $subject_id = (int) $this->params()->fromRoute('subject_id', 0);
-        $time = (int) $this->params()->fromRoute('time', time());
+        $date = (string) $this->params()->fromRoute('date', date('Y-m-d',time()));
 
-        $timeS = strtotime('last monday', strtotime('tomorrow', $time));
-        $timeE = strtotime('+6 days', $timeS);
-
-        $grade = $this->getGradeTable()->getGrade($grade_id);
-        $subject = $this->getSubjectTable()->getSubject($subject_id);
-        $lessons = $this->getLessonTable()->getLessonsByGradeSubjectAndTime($grade_id, $subject_id, $timeS, $timeE);
-        $units = $this->getUnitTable()->getUnitsInGrade($grade_id);
-
-        $arrDates = array();
-        foreach ($lessons as $lesson):
-            $arrDates[] = date_create($lesson->date);
-        endforeach;
+        $grade = $this->getRepository('Grade')->find($grade_id);
+        $subject = $this->getRepository('Subject')->find($subject_id);
+        if(!$grade or !$subject) return $this->notFoundAction();
         
-        $arrUnits = $this->getArrUnits($units, $lessons);
+        $time_from = strtotime('last monday', strtotime('tomorrow', strtotime($date)));
+        $time_to = strtotime('+6 days', $time_from);
+        $date_from = new \DateTime(date('Y-m-d',$time_from));
+        $date_to = new \DateTime(date('Y-m-d',$time_to));
+
+        $qb = $this->queryBuilder();
+        $qb->select('u.id'.' AS unit_id');
+        $qb->addSelect('u.fullname'.' AS unit_fullname');
+        $qb->addSelect('L.id'.' AS lesson_id');
+        $qb->addSelect('L.date'.' AS lesson_date');
+        $qb->addSelect('m.value'.' AS mark_value');
+        $qb->from('Journal\Entity\Grade', 'g');
+        $qb->innerJoin('g.units', 'u');
+        $qb->innerJoin('g.lessons', 'L');
+        $qb->leftJoin('u.marks', 'm', 'WITH', 'm.lesson = L');
+        $qb->where('g = :grade');
+        $qb->andWhere('L.subject = :subject');
+        $qb->andWhere($qb->expr()->between('L.date', ':date_from', ':date_to'));
+        $qb->orderBy('u.fullname');
+        $qb->addOrderBy('L.date');
+        $qb->setParameter('grade', $grade);
+        $qb->setParameter('subject', $subject);
+        $qb->setParameter('date_from', $date_from, \Doctrine\DBAL\Types\Type::DATETIME);
+        $qb->setParameter('date_to', $date_to, \Doctrine\DBAL\Types\Type::DATETIME);
+        
+        $query = $qb->getQuery();
+        $arrResults = $query->getArrayResult();        
 
         return new ViewModel(array(
             'grade' => $grade,
             'subject' => $subject,
-            'dates' => $arrDates,
-            'units' => $arrUnits,
-            'timeS' => $timeS,
-            'timeE' => $timeE,
+            'date_from' => $date_from,
+            'date_to' => $date_to,
+            'results' => $arrResults,
         ));
-    }
-    
-    private function getArrUnits($units, $lessons)
-    {
-        $arrUnits = array();
-        foreach ($units as $unit):
-            $arrMarks = array();
-            foreach ($lessons as $lesson):
-                $mark = $this->getMarkTable()->getMarkValueByUnitAndLesson($unit->id, $lesson->id);
-                $arrMarks[] = array(
-                    'lesson' => $lesson,
-                    'mark' => $mark,
-                );
-            endforeach;
-            $arrUnits[] = array(
-                'unit' => $unit,
-                'marks' => $arrMarks,
-            );
-        endforeach; 
-        return $arrUnits;
+
     }
 }
 
