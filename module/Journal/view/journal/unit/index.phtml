@@ -1,17 +1,15 @@
 <?php
-$title = 'Unit info';
+$title = 'Итоговые оценки ученика за месяц';
 $this->headTitle($title);
 ?>
 <h1><?php echo $this->escapeHtml($title); ?></h1>
-<p>Name: <?php echo $this->escapeHtml($unit->fullname);?></p>
-<p>Grade:<?php echo $this->escapeHtml($grade->level), $this->escapeHtml($grade->prefix);?></p>
-<p>Month:<?php echo $this->escapeHtml(date("F",$month));?></p>
-
+<p>Ф.И.О: <?php echo $this->escapeHtml($unit->fullname);?></p>
+<p>Класс: <?php echo $this->escapeHtml($grade->level), $this->escapeHtml($grade->prefix);?></p>
+<p>Месяц: <?php echo $this->escapeHtml(date("F",$month));?></p>
 <table class="table">
     <tr>
-        <th>Subject name</th>
-        <th>Total mark</th>
-        <th>&nbsp;</th>
+        <th>Название предмета</th>
+        <th>Итоговая оценка</th>
     </tr>
     <?php foreach ($marks as $mark) : ?>
         <tr>

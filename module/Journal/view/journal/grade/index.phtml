@@ -1,24 +1,22 @@
 <?php
-$title = 'Grade list';
+$title = 'Список классов школы';
 $this->headTitle($title);
 ?>
 <h1><?php echo $this->escapeHtml($title); ?></h1>
 
 <table class="table">
 <tr>
-    <th>Level</th>
-    <th>Prefix</th>
+    <th>Класс</th>
     <th>&nbsp;</th>
 </tr>
 <?php foreach ($grades as $grade) : ?>
 <tr>
-    <td><?php echo $this->escapeHtml($grade->level);?></td>
-    <td><?php echo $this->escapeHtml($grade->prefix);?></td>
+    <td><?php echo $this->escapeHtml($grade->level.$grade->prefix);?></td>
     <td>
         <a href="<?php echo $this->url('grade',
-            array('action'=>'units', 'id' => $grade->id));?>">[Unit List]</a>
+            array('action'=>'units', 'id' => $grade->id));?>">[Список учеников]</a>
         <a href="<?php echo $this->url('grade',
-            array('action'=>'subjects', 'id' => $grade->id));?>">[Subject List]</a>
+            array('action'=>'subjects', 'id' => $grade->id));?>">[Список предметов]</a>
     </td>
 </tr>
 <?php endforeach; ?>

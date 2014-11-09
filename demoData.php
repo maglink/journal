@@ -24,15 +24,131 @@ if (mysql_query($sql, $link)) {
 }
 mysql_select_db($database_name) or die('Could not select database');
 
-
-function generateRandomString($length = 10, $characters) {
-    $randomString = '';
-    for ($i = 0; $i < $length; $i++) {
-        $randomString .= $characters[rand(0, strlen($characters) - 1)];
-    }
-    return $randomString;
+function generateRandomUnitName() {
+    
+    $firstNames = array(
+        "Александр",
+        "Анастасия",
+        "Максим",
+        "Мария",
+        "Иван",
+        "Дарья",
+        "Артём",
+        "Анна",
+        "Никита",
+        "Елизавета",
+        "Дмитрий",
+        "Виктория",
+        "Егор",
+        "Полина",
+        "Даниил",
+        "Екатерина",
+        "Михаил",
+        "Софья",
+        "Андрей",
+        "Александра",
+        "Алексей",
+        "Ксения",
+        "Илья",
+        "София",
+        "Кирилл",
+        "Арина",
+        "Сергей",
+        "Алина",
+        "Владислав",
+        "Вероника",
+        "Роман",
+        "Варвара",
+        "Владимир",
+        "Валерия",
+        "Тимофей",
+        "Кристина",
+        );
+ 
+    $secondNames = array(
+        "Иванов",
+        "Васильев",
+        "Петров",
+        "Смирнов",
+        "Михайлов",
+        "Фёдоров",
+        "Соколов",
+        "Яковлев",
+        "Попов",
+        "Андреев",
+        "Алексеев",
+        "Александров",
+        "Лебедев",
+        "Григорьев",
+        "Степанов",
+        "Семёнов",
+        "Павлов",
+        "Богданов",
+        "Николаев",
+        "Дмитриев",
+        "Егоров",
+        "Волков",
+        "Кузнецов",
+        "Никитин",
+        "Соловьёв",
+        "Тимофеев",
+        "Орлов",
+        "Афанасьев",
+        "Филиппов",
+        "Сергеев",
+        "Захаров",
+        "Матвеев",
+        "Виноградов",
+        "Кузьмин",
+        "Максимов",
+        "Козлов",
+        "Ильин",
+        "Герасимов",
+        "Марков",
+        "Новиков",
+        "Морозов",
+        );
+    
+    $randomFullname = '';
+    $firstNameNum = rand(1, count($firstNames)-1);
+    $randomFullname .= $firstNames[$firstNameNum];
+    $randomFullname .= " ";
+    $randomFullname .= $secondNames[rand(1, count($secondNames)-1)];
+    if($firstNameNum % 2 == 1)
+        $randomFullname .= "а";
+    
+    return $randomFullname;
 }
 
+
+function getSubjectName($num) {
+   
+    $names = array(
+        "Математика",
+        "Алгебра",
+        "Геометрия",
+        "Информатика",
+        "Природоведение",
+        "История",
+        "Биология",
+        "Физика",
+        "Химия",
+        "Экология",
+        "Обществознание",
+        "Правоведение",
+        "Русский язык",
+        "Литература",
+        "Иностранный язык",
+        "Труд",
+        "Черчение",
+        "Физическая культура",
+        "Изобразительное искусство",
+        "Музыка",
+    );
+    
+    $num = $num % count($names);
+    return $names[$num];
+}
 
 
 //TABLE GRADE
@@ -86,7 +202,7 @@ echo "Database ".$table_name." created successfully\n";
 for ($i = 1; $i <= 50; $i++) {
 
     $grade_id = rand(1, 10);
-    $fullname = generateRandomString(rand(10, 15),' abcdefghijklmnopqrstuvwxyz');
+    $fullname = generateRandomUnitName();
     
     $sql = 'INSERT INTO '.$table_name.' (id,grade_id,fullname) '.
        'VALUES ( '.$i.','.$grade_id.', "'.$fullname.'" )';
@@ -100,8 +216,6 @@ for ($i = 1; $i <= 50; $i++) {
     echo $i;
 }
 echo "\n";
-
-
 
 //TABLE SUBJECT
 $table_name = "subject";
@@ -118,7 +232,7 @@ echo "Database ".$table_name." created successfully\n";
 
 for ($i = 1; $i <= 20; $i++) {
 
-    $name = generateRandomString(rand(10, 15),' ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+    $name = getSubjectName($i);
 
     $sql = 'INSERT INTO '.$table_name.' (id,name) '.
        'VALUES ( '.$i.', "'.$name.'" )';
@@ -132,7 +246,6 @@ for ($i = 1; $i <= 20; $i++) {
     echo $i;
 }
 echo "\n";
-
 
 //TABLE LESSON
 $table_name = "lesson";

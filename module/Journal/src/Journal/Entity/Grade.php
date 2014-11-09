@@ -22,7 +22,9 @@ class Grade
     /** @ORM\Column(type="string") */
     protected $prefix;
     
-    /** @ORM\OneToMany(targetEntity="Unit", mappedBy="grade") */
+    /** @ORM\OneToMany(targetEntity="Unit", mappedBy="grade")
+     * @ORM\OrderBy({"fullname" = "ASC"})
+     **/
     protected $units;
 
     /** @ORM\OneToMany(targetEntity="Lesson", mappedBy="grade") */
@@ -34,6 +36,7 @@ class Grade
     *      joinColumns={@ORM\JoinColumn(name="grade_id", referencedColumnName="id")},
     *      inverseJoinColumns={@ORM\JoinColumn(name="subject_id", referencedColumnName="id")}
     *      )
+    * @ORM\OrderBy({"name" = "ASC"})
     **/
     protected $subjects;
     

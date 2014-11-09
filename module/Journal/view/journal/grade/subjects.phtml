@@ -1,12 +1,12 @@
 <?php
-$title = 'Subject list in grade "'.$grade->level.$grade->prefix.'"';
+$title = 'Список предметов "'.$grade->level.$grade->prefix.'" класса';
 $this->headTitle($title);
 ?>
 <h1><?php echo $this->escapeHtml($title); ?></h1>
 
 <table class="table">
 <tr>
-    <th>Name</th>
+    <th>Название предмета</th>
     <th>&nbsp;</th>
 </tr>
 <?php foreach ($subjects as $subject) : ?>
@@ -14,7 +14,8 @@ $this->headTitle($title);
     <td><?php echo $this->escapeHtml($subject->name);?></td>
     <td>
         <a href="<?php echo $this->url('journal',
-            array('grade_id' => $grade->id, 'subject_id' => $subject->id));?>">GradeBook</a>
+            array('grade_id' => $grade->id, 
+                'subject_id' => $subject->id));?>">Журнал оценок</a>
     </td>
 </tr>
 <?php endforeach; ?>

@@ -8,7 +8,8 @@ class GradeController extends EntityController
     public function indexAction()
     {
         return new ViewModel(array(
-            'grades' => $this->getRepository('Grade')->findAll(),
+            'grades' => $this->getRepository('Grade')
+                ->findBy(array(), array('level' => 'ASC', 'prefix' => 'ASC'))
         ));
     }
 
