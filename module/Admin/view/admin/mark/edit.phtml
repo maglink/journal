@@ -1,11 +1,11 @@
 <?php
-$title = 'Edit Mark';
+$title = 'Редактирование оценки';
 $this->headTitle($title);
 ?>
 <h1><?php echo $this->escapeHtml($title); ?></h1>
-<p>Subject: <?php echo $this->escapeHtml($lesson->subject->name); ?></p>
-<p>Date: <?php echo $this->escapeHtml($lesson->date->format("Y-m-d")); ?></p>
-<p>Unit: <?php echo $this->escapeHtml($unit->fullname); ?></p>
+<p>Предмет: <?php echo $this->escapeHtml($lesson->subject->name); ?></p>
+<p>Дата занятия: <?php echo $this->escapeHtml($lesson->date->format("Y-m-d")); ?></p>
+<p>Ф.И.О. ученика: <?php echo $this->escapeHtml($unit->fullname); ?></p>
 <?php
 $form = $this->form;
 $form->setAttribute('action', $this->url('admin/mark', 

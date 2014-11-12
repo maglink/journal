@@ -4,7 +4,7 @@ namespace Journal\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Journal\Repository\GradeRepository")
  * @ORM\Table(name="grade")
  */
 class Grade

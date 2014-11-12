@@ -1,7 +1,7 @@
 <?php
 $servername = "localhost";
 $username = "root";
-$password = "";
+$password = "root";
 $database_name = "journal";
 
 //LINK OPEN
@@ -169,11 +169,11 @@ for ($i = 1; $i <= 10; $i++) {
     
     $prefix = '';
     $rand = rand(1, 3);
-    if($rand == 1) {$prefix = 'a';}
-    if($rand == 2) {$prefix = 'b';}
+    if($rand == 1) {$prefix = 'а';}
+    if($rand == 2) {$prefix = 'б';}
     
     $sql = 'INSERT INTO '.$table_name.' (id,level, prefix) '.
-       'VALUES ( '.$i.','.rand(1, 11).', "'.$prefix.'" )';
+       'VALUES ( '.$i.','.$i.', "'.$prefix.'" )';
 
     $retval = mysql_query( $sql, $link );
     if(! $retval )

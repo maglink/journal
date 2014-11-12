@@ -4,7 +4,6 @@ namespace Journal;
 return array(
     'controllers' => array(
         'invokables' => array(
-            'Journal\Controller\Entity' => 'Journal\Controller\EntityController',
             'Journal\Controller\Journal' => 'Journal\Controller\JournalController',
             'Journal\Controller\Grade' => 'Journal\Controller\GradeController',
             'Journal\Controller\Unit' => 'Journal\Controller\UnitController',

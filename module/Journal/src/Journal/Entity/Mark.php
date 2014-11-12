@@ -2,16 +2,12 @@
 namespace Journal\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Zend\InputFilter\Factory as InputFactory;
-use Zend\InputFilter\InputFilter;
-use Zend\InputFilter\InputFilterAwareInterface;
-use Zend\InputFilter\InputFilterInterface;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="mark")
  */
-class Mark implements InputFilterAwareInterface
+class Mark
 {
     /**
     * @ORM\Id
@@ -40,43 +36,4 @@ class Mark implements InputFilterAwareInterface
         $this->$property = $value;
     }
 
-    public function setInputFilter(InputFilterInterface $inputFilter)
-    {
-        throw new Exception("Not used");
-    }
- 
-    public function getInputFilter()
-    {
-        if (!$this->inputFilter) {
-            $inputFilter = new InputFilter();
-            $factory     = new InputFactory();
- 
-            $inputFilter->add($factory->createInput(array(
-                'name'     => 'unit_id',
-                'required' => true,
-                'filters'  => array(
-                    array('name' => 'Int'),
-                ),
-            )));
-            
-            $inputFilter->add($factory->createInput(array(
-                'name'     => 'lesson_id',
-                'required' => true,
-                'filters'  => array(
-                    array('name' => 'Int'),
-                ),
-            )));
-             
-            $inputFilter->add($factory->createInput(array(
-                'name'     => 'value',
-                'filters'  => array(
-                    array('name' => 'Int'),
-                ),
-            )));
- 
-            $this->inputFilter = $inputFilter;
-        }
- 
-        return $this->inputFilter;
-    }
 }

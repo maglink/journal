@@ -32,8 +32,6 @@ class MarkController extends EntityController
         
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $markFilter = new Mark();
-            $form->setInputFilter($markFilter->getInputFilter());
             $form->setData($request->getPost());
  
             if ($form->isValid()) {
