@@ -1,0 +1,65 @@
+<?php
+$title = 'Журнал оценок '.$grade->level.$grade->prefix.' класса по предмету '.$subject->name;
+$this->headTitle($title);
+?>
+<h2><?php echo $this->escapeHtml($title); ?></h2>
+
+<p>Неделя: <?php echo $this->escapeHtml($date_from->format('W'));?></p>
+
+<p><?php echo $this->escapeHtml($date_from->format('d/m'));?> - 
+    <?php echo $this->escapeHtml($date_to->format('d/m'));?></p>
+<?php $nowtime = strtotime($date_from->format('Y-m-d'));?>
+<a href="<?php echo $this->url('journal_db',
+    array(  'grade_id' => $grade->id,
+            'subject_id' => $subject->id,
+            'date' => date("Y-m-d", strtotime('-7 days', $nowtime)),
+          )
+    );?>">Пред. неделя</a> - 
+<a href="<?php echo $this->url('journal_db',
+    array(  'grade_id' => $grade->id,
+            'subject_id' => $subject->id,
+            'date' => date("Y-m-d", strtotime('+7 days', $nowtime)),
+          )
+    );?>">След. неделя</a>
+
+<?php if(count($results) == 0) : ?>
+
+    <h3>Занятий не найдено.</h3>
+    
+<?php else : ?>
+    
+    <table class="table table-bordered">
+        <tr>
+            <th>Ф.И.О ученика</th>
+            <?php $unit_id = $results[0]['unit_id']; ?>
+            <?php for ($i = 0; $i < count($results) and $results[$i]['unit_id'] == $unit_id; $i++) : ?>
+                <?php $date = $results[$i]['lesson_date']; ?>
+                <th><?php echo $this->escapeHtml($date);?></th>
+            <?php endfor; ?>
+        </tr>
+        <?php for ($i = 0; $i < count($results); $i++) : ?>
+            <tr>
+                <?php $unit_id = $results[$i]['unit_id']; ?>
+                <?php $unit_fullname = $results[$i]['unit_fullname']; ?>
+                <td><?php echo $this->escapeHtml($unit_fullname);?></td>
+                
+                <?php for (; $i < count($results) and $results[$i]['unit_id'] == $unit_id; $i++) : ?>
+                
+                    <?php $mark = $results[$i]['mark_value']; ?>
+                    <?php $mark = $mark ? $mark : "-"; ?>
+                    
+                    <td>
+                        <a href="<?php echo $this->url('admin/mark',
+                            array(  'action' => 'edit',
+                                    'unit_id' => $unit_id,
+                                    'lesson_id' => $results[$i]['lesson_id']
+                                  )
+                        );?>"><?php echo $this->escapeHtml($mark);?></a>
+                    </td>
+                    
+                <?php endfor; $i--;?>  
+            </tr>
+        <?php endfor; ?>
+    </table>
+    
+<?php endif; ?>

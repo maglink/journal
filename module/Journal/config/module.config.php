@@ -7,6 +7,7 @@ return array(
             'Journal\Controller\Journal' => 'Journal\Controller\JournalController',
             'Journal\Controller\Grade' => 'Journal\Controller\GradeController',
             'Journal\Controller\Unit' => 'Journal\Controller\UnitController',
+            'Journal\Controller\JournalDB' => 'Journal\Controller\JournalControllerDB',
         ),
     ),
     'router' => array(
@@ -29,10 +30,26 @@ return array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'grade_id'     => '[0-9]+',
                         'subject_id'     => '[0-9]+',
-                        'time'     => '[0-9_-]+',
+                        'date'     => '[0-9_-]+',
                     ),
                     'defaults' => array(
                         'controller' => 'Journal\Controller\Journal',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'journal_db' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/journal_db[/:action][/:grade_id][/:subject_id][/:date]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'grade_id'     => '[0-9]+',
+                        'subject_id'     => '[0-9]+',
+                        'date'     => '[0-9_-]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Journal\Controller\JournalDB',
                         'action'     => 'index',
                     ),
                 ),
