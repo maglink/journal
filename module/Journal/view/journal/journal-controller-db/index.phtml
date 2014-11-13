@@ -34,7 +34,7 @@ $this->headTitle($title);
             <?php $unit_id = $results[0]['unit_id']; ?>
             <?php for ($i = 0; $i < count($results) and $results[$i]['unit_id'] == $unit_id; $i++) : ?>
                 <?php $date = $results[$i]['lesson_date']; ?>
-                <th><?php echo $this->escapeHtml($date);?></th>
+                <th><?php echo $this->escapeHtml($date->format('d/m'));?></th>
             <?php endfor; ?>
         </tr>
         <?php for ($i = 0; $i < count($results); $i++) : ?>

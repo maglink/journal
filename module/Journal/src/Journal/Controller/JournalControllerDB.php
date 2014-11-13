@@ -1,18 +1,10 @@
 <?php
 namespace Journal\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-class JournalControllerDB extends AbstractActionController
+class JournalControllerDB extends TableController
 {
-    
-    protected $gradeTable;
-    protected $unitTable;
-    protected $subjectTable;
-    protected $lessonTable;
-    protected $markTable;
-
     public function indexAction()
     {
         $grade_id = (int) $this->params()->fromRoute('grade_id', 0);
@@ -28,62 +20,30 @@ class JournalControllerDB extends AbstractActionController
         $date_from = new \DateTime(date('Y-m-d',$time_from));
         $date_to = new \DateTime(date('Y-m-d',$time_to));
         
-        $arrResults = $this->getGradeTable()
-                ->getGradeJournalBySybjectInDateRange($grade, $subject, $date_from, $date_to);
+        $rowset = $this->getGradeTable()
+                ->getGradeJournalBySubjectInDateRange($grade, $subject, $date_from, $date_to);
+        
+        $records = array();
+        foreach ($rowset as $row)
+        {
+            $records[] = array(
+                'unit_id' => $row->units[0]->id,
+                'unit_fullname' => $row->units[0]->fullname,
+                'lesson_id' => $row->lessons[0]->id,
+                'lesson_date' => new \DateTime($row->lessons[0]->date),
+                'mark_value' => $row->marks[0]->value,
+            );
+        }
         
         return new ViewModel(array(
             'grade' => $grade,
             'subject' => $subject,
             'date_from' => $date_from,
             'date_to' => $date_to,
-            'results' => $arrResults,
+            'results' => $records,
         ));
     }
     
-    public function getGradeTable()
-    {
-        if (!$this->gradeTable) {
-            $sm = $this->getServiceLocator();
-            $this->gradeTable = $sm->get('Journal\Model\GradeTable');
-        }
-        return $this->gradeTable;
-    }
-    
-    public function getUnitTable()
-    {
-        if (!$this->unitTable) {
-            $sm = $this->getServiceLocator();
-            $this->unitTable = $sm->get('Journal\Model\UnitTable');
-        }
-        return $this->unitTable;
-    }
-    
-    public function getSubjectTable()
-    {
-        if (!$this->subjectTable) {
-            $sm = $this->getServiceLocator();
-            $this->subjectTable = $sm->get('Journal\Model\SubjectTable');
-        }
-        return $this->subjectTable;
-    }
-    
-    public function getLessonTable()
-    {
-        if (!$this->lessonTable) {
-            $sm = $this->getServiceLocator();
-            $this->lessonTable = $sm->get('Journal\Model\LessonTable');
-        }
-        return $this->lessonTable;
-    }
-    
-    public function getMarkTable()
-    {
-        if (!$this->markTable) {
-            $sm = $this->getServiceLocator();
-            $this->markTable = $sm->get('Journal\Model\MarkTable');
-        }
-        return $this->markTable;
-    }  
 }
 
 

@@ -69,4 +69,24 @@ class UnitTableTest extends PHPUnit_Framework_TestCase
         $this->assertSame(50, $result[0]->id);
     }
 
+    /**
+     * @expectedException Exception
+     */
+    public function testExceptionIsThrownWhenGettingNonexistentUnit()
+    {
+
+        $resultSet = new ResultSet();
+        $resultSet->setArrayObjectPrototype(new Unit());
+        $resultSet->initialize(array());
+
+        $mockTableGateway = $this->getMock('Zend\Db\TableGateway\TableGateway', array('select'), array(), '', false);
+        $mockTableGateway->expects($this->once())
+                         ->method('select')
+                         ->with(array('id' => 123))
+                         ->will($this->returnValue($resultSet));
+        
+        $unitTable = new UnitTable($mockTableGateway);
+        $unitTable->getUnit(123);
+    }
+    
 }

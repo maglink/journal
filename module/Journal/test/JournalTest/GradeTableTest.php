@@ -44,33 +44,5 @@ class GradeTableTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame($grade, $gradeTable->getGrade(123));
     }
-    
-    public function testCanDeleteAnGradeByItsId()
-    {
-        $mockTableGateway = $this->getMock('Zend\Db\TableGateway\TableGateway', array('delete'), array(), '', false);
-        $mockTableGateway->expects($this->once())
-                         ->method('delete')
-                         ->with(array('id' => 123));
-
-        $gradeTable = new GradeTable($mockTableGateway);
-        $gradeTable->deleteGrade(123);
-    }
-
-    public function testSaveGradeWithoutId()
-    {
-        $gradeData = array('level'  => 10,
-                           'prefix'  => 'some prefix');
-        $grade     = new Grade();
-        $grade->exchangeArray($gradeData);
-
-        $mockTableGateway = $this->getMock('Zend\Db\TableGateway\TableGateway', array('insert'), array(), '', false);
-        $mockTableGateway->expects($this->once())
-                         ->method('insert')
-                         ->with($gradeData);
-
-        $gradeTable = new GradeTable($mockTableGateway);
-        $gradeTable->saveGrade($grade);
-    }
- 
 
 }

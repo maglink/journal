@@ -31,7 +31,7 @@ class GradeTable
         return $row;
     }
     
-    public function getGradeJournalBySybjectInDateRange($grade, $subject, $date_from, $date_to)    {
+    public function getGradeJournalBySubjectInDateRange($grade, $subject, $date_from, $date_to)    {
 
         $select = new \Zend\Db\Sql\Select();
         $select->from(array('g' => 'grade'));
@@ -53,19 +53,6 @@ class GradeTable
                 $date_from->format("Y-m-d"), $date_to->format("Y-m-d"));
         $select->order(array('u.fullname DESC', 'L.date DESC'));
 
-        $rowset = $this->tableGateway->selectWith($select);
-        $records = array();
-        foreach ($rowset as $row)
-        {
-            $records[] = array(
-                'unit_id' => $row->units[0]->id,
-                'unit_fullname' => $row->units[0]->fullname,
-                'lesson_id' => $row->lessons[0]->id,
-                'lesson_date' => $row->lessons[0]->date,
-                'mark_value' => $row->marks[0]->value,
-            );
-        }
-
-        return $records;
+        return $this->tableGateway->selectWith($select);
     }
 }

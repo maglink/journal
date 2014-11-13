@@ -3,10 +3,10 @@ namespace Journal\Model;
  
 class Lesson
 {
-    protected $id;
-    protected $grade_id;
-    protected $subject_id;
-    protected $date;
+    public $id;
+    public $grade_id;
+    public $subject_id;
+    public $date;
  
     public function exchangeArray($data)
     {
@@ -16,14 +16,5 @@ class Lesson
         $this->date = (isset($data['date'])) ? $data['date'] : null;
     }
 
-    public function __get($property) 
-    {
-        return $this->$property;
-    }
-    
-    public function __set($property, $value) 
-    {
-        $this->$property = $value;
-    }
 }
 

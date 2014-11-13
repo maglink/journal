@@ -9,6 +9,7 @@ $link = mysql_connect($servername, $username, $password)
     or die('Не удалось соединиться: ' . mysql_error());
 echo 'Соединение успешно установлено' . "\n";
 
+
 //DATABASE
 $sql = 'DROP DATABASE '.$database_name;
 if (mysql_query($sql, $link)) {
@@ -16,13 +17,17 @@ if (mysql_query($sql, $link)) {
 } else {
     echo 'Ошибка при удалении базы данных: ' . mysql_error() . "\n";
 }
-$sql = 'CREATE DATABASE '.$database_name;;
+$sql = 'CREATE DATABASE '.$database_name.' CHARACTER SET utf8 COLLATE utf8_general_ci';
 if (mysql_query($sql, $link)) {
     echo "База ".$database_name." успешно создана\n";
 } else {
     echo 'Ошибка при создании базы данных: ' . mysql_error() . "\n";
 }
 mysql_select_db($database_name) or die('Could not select database');
+
+mysql_query("SET NAMES 'utf8'"); 
+mysql_query("SET CHARACTER SET 'utf8'");
+
 
 function generateRandomUnitName() {
     
@@ -268,7 +273,7 @@ for ($grade_id = 1; $grade_id <= 10; $grade_id++) {
         
         if(rand(1,3) != 1) {continue;}
         
-        for ($day = -10; $day <= 10; $day++) {
+        for ($day = -5; $day <= 5; $day++) {
             
             if(rand(1,3) == 1) {continue;}
             

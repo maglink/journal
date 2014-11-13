@@ -23,28 +23,9 @@ class MarkTable
             )
         );
         $row = $rowset->current();
-        if(!$row):
-            return "-";
-        endif;
+        if(!$row) {
+            return NULL;
+        }
         return $row->value;
     }
-    
-    public function saveMark(Mark $mark)
-    {
-        $data = array(
-            'unit_id' => (int)$mark->unit_id,
-            'lesson_id'  => (int)$mark->lesson_id,
-            'value' => $mark->value,
-        );
-        $value = $this->getMarkValueByUnitAndLesson($mark->unit_id, $mark->lesson_id);
-        if ($value != "-") {
-            $this->tableGateway->update($data, array(
-                'unit_id' => (int)$mark->unit_id,
-                'lesson_id'  => (int)$mark->lesson_id
-            ));
-        } else {
-            $this->tableGateway->insert($data);
-        }
-    }
-
 }

@@ -4,6 +4,7 @@ namespace Admin\Controller;
 use Journal\Controller\EntityController;
 use Journal\Entity\Mark;
 use Journal\Form\MarkForm;
+use Journal\Form\MarkFilter;
 
 class MarkController extends EntityController
 {
@@ -32,6 +33,7 @@ class MarkController extends EntityController
         
         $request = $this->getRequest();
         if ($request->isPost()) {
+            $form->setInputFilter(new MarkFilter());
             $form->setData($request->getPost());
  
             if ($form->isValid()) {

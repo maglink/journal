@@ -4,10 +4,7 @@ namespace Journal\Form;
  
 use Zend\Form\Element;
 use Zend\Form\Form;
-use Zend\InputFilter\InputFilter;
-use Zend\InputFilter\Input;
-use Zend\Validator;
- 
+
 class MarkForm extends Form
 {
     public function __construct($name = null)
@@ -15,9 +12,9 @@ class MarkForm extends Form
         parent::__construct('mark');
         
         $unit_id = new Element('unit_id');
-        /*$unit_id->setAttributes(array(
+        $unit_id->setAttributes(array(
             'type'  => 'hidden'
-        ));*/
+        ));
         
         $lesson_id = new Element('lesson_id');
         $lesson_id->setAttributes(array(
@@ -43,37 +40,7 @@ class MarkForm extends Form
         $this->add($lesson_id);
         $this->add($value);
         $this->add($submit);
-
-        $this->setInputFilter($this->getInputFilter());
-
     }
-    
-    public function getInputFilter()
-    {
- 
-        $unit_id = new Input('unit_id');
-        $unit_id->setRequired(true)
-                ->setAllowEmpty(false); 
-        $unit_id->getFilterChain()
-                ->attachByName('Int');
 
-        $lesson_id = new Input('unit_id');
-        $lesson_id->setRequired(true)
-                ->setAllowEmpty(false); 
-        $lesson_id->getFilterChain()
-                ->attachByName('Int');
-
-        $value = new Input('value');
-        $value->getFilterChain()
-                ->attachByName('Int');
-        
-        $inputFilter = new InputFilter();
-        $inputFilter->add($unit_id);
-        $inputFilter->add($lesson_id);
-        $inputFilter->add($value);
-        $inputFilter->setData($_POST);
-
-        return $inputFilter;
-    }
 }
 

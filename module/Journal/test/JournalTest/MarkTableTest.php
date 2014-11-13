@@ -32,4 +32,23 @@ class MarkTableTest extends PHPUnit_Framework_TestCase
         $this->assertSame($mark->value, $markTable->getMarkValueByUnitAndLesson(1,2));
     }
 
+    public function testExceptionIsThrownWhenGettingNonexistentMark()
+    {
+
+        $resultSet = new ResultSet();
+        $resultSet->setArrayObjectPrototype(new Mark());
+        $resultSet->initialize(array());
+
+        $mockTableGateway = $this->getMock('Zend\Db\TableGateway\TableGateway', 
+                                            array('select'), array(), '', false);
+        $mockTableGateway->expects($this->once())
+                         ->method('select')
+                         ->with(array('unit_id' => 1, 'lesson_id' => 2))
+                         ->will($this->returnValue($resultSet));
+        
+        $markTable = new MarkTable($mockTableGateway);
+
+        $this->assertEquals(null, $markTable->getMarkValueByUnitAndLesson(1,2));
+    }
+    
 }
